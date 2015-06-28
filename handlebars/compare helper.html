@@ -1,0 +1,32 @@
+debug helper.html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript" src="js/handlebars-v3.0.3.js"></script>
+<script id="tpl" type="text/x-handlebars-template">
+{{#compare num1 num2}}
+  num1大于num2
+{{else}}
+num1小于num2
+{{/compare}}
+</script>
+<script type="text/javascript">
+
+Handlebars.registerHelper("compare", function(a, b, options) {
+  return a > b ? options.fn(this) : options.inverse(this);
+});
+
+var source = document.getElementById('tpl').innerHTML;
+var template = Handlebars.compile(source);
+var context = {
+    num1: 3,
+    num2: 5
+};
+var html = template(context);
+document.body.innerHTML = html;
+</script>
+</body>
+</html>

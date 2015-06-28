@@ -1,0 +1,40 @@
+debug helper.html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript" src="js/handlebars-v3.0.3.js"></script>
+<script id="tpl" type="text/x-handlebars-template">
+{{#with person}}
+    <h1>{{../company.name}}</h1>
+    {{debug "something"}}
+{{/with}}
+</script>
+<script type="text/javascript">
+
+Handlebars.registerHelper("debug", function(optionalValue) {
+  console.log("Current Context");
+  console.log("====================");
+  console.log(this);
+  if (optionalValue) {
+    console.log("Value");
+    console.log("====================");
+    console.log(optionalValue);
+  }
+});
+
+var source = document.getElementById('tpl').innerHTML;
+var template = Handlebars.compile(source);
+var context = {
+    "person":
+    { "name": "Alan" },
+    "company":
+    {"name": "Rad, Inc." }
+};
+var html = template(context);
+document.body.innerHTML = html;
+</script>
+</body>
+</html>

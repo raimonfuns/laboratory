@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+
+<!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<![endif]-->
+
+<style type="text/css">
+/*css reset*/
+html,body{height: 100%;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{margin:0;padding:0;}
+body{font-size:12px;color:#333}
+img{border:none;}
+ul,ol{list-style:none;}
+input,select,textarea{outline:none; border:none; background:#FFF;}
+textarea{resize:none;}
+a{text-decoration:none;color:#333}
+/*清浮动*/
+.clearfix:after{content:"";display:block;visibility:hidden;clear:both;}
+.clearfix{zoom:1;}
+
+/*公共样式*/
+.fl{float: left;}
+/*布局*/
+.container{height: 100%;}
+.blk-aside,
+.blk-list{position: relative; height: 100%;}
+.blk-aside{width: 230px; margin-left: -100%; border-right: 1px solid #ccc;}
+.blk-list{width: 230px; margin-left: -100%; left: 230px; border-right: 1px solid #ccc;}
+.blk-note{width: 100%; height: 100%;}
+.blk-note .cont{margin: 0 0 0 860px;}
+
+/*头部*/
+header{width: 100%; height: 60px;}
+header h1{height: 58px; line-height: 58px; border: 1px solid #ccc; text-indent: 12px; color: #999; background: #ddd;}
+
+/*笔记列表栏*/
+.blk-aside h2, 
+.note-list h3{font-size: 14px; font-weight: 200;}
+.blk-aside h2{padding: 27px 0 0 11px;}
+.blk-aside .list-content h3{padding: 21px 0 0 12px;}
+.blk-aside .note-list{padding: 7px 0 0 19px;}
+.blk-aside .notebook{line-height: 28px;}
+.blk-aside .notebook .list-item{display: block;}
+.blk-aside .notebook .ico-book{padding-left: 32px; background: url(images/icon.png) left 9px no-repeat;}
+.blk-aside .notebook .ico-book-sec{margin-left: 21px; padding-left: 21px; background: url(images/icon.png) left -20px no-repeat;}
+.blk-aside .notebook .ico-book:hover .ico-delete,
+.blk-aside .notebook .ico-book-sec:hover .ico-delete{display: block;}
+.ico-delete{display: none; float: right; width: 12px; height: 12px; margin-top: 8px; padding-right: 18px; background: url(images/icon.png) left -55px no-repeat;}
+.addBtnWrap{width: 230px; height: 40px; line-height: 40px; position: absolute; bottom: 0; left: 0; border-top: 1px solid #ccc;}
+.addBtnWrap .addBtn{display: block; width: 100px; margin-left: 17px; text-indent: 29px; cursor: pointer; font-size: 14px; background: url(images/icon.png) left -71px no-repeat;}
+</style>
+</head>
+<body>
+    <header>
+        <h1>GTD Tools</h1>
+    </header>   
+    <div class="container clearfix">
+        <div class="blk-note fl">
+            <div class="cont"></div>
+        </div>
+        <div class="blk-aside fl">
+            <h2>所有任务（11）</h2>
+            <div class="list-content">
+                <h3>分类列表</h3>
+                <ul class="note-list">
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>百度IFE项目</span><span> (10) </span><i class="ico-delete"></i></a>
+                        <ul>
+                            <li class="notebook">
+                                <a href="#" class="list-item ico-book-sec"><span>task1</span><span> (6) </span><i class="ico-delete"></i></a>
+                            </li>
+                            <li class="notebook">
+                                <a href="#" class="list-item ico-book-sec"><span>task2</span><span> (4)</span><i class="ico-delete"></i></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>毕业设计</span><span> (1)</span><i class="ico-delete"></i></a>
+                    </li>
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>社团活动</span><span> (0) </span><i class="ico-delete"></i></a>
+                    </li>
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>默认分类</span><span> (0) </span><i class="ico-delete"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="addBtnWrap"><a class="addBtn">新增分类</a></div>
+        </div>
+        <div class="blk-list fl"></div>
+    </div>
+</body>
+</html>

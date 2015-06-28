@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript" src="js/handlebars-v3.0.3.js"></script>
+<script id="tpl" type="text/x-handlebars-template">
+{{#if list}}
+<ul id="list">
+    {{#each list}}
+        <li>{{this}}</li>
+    {{/each}}
+</ul>
+{{else}}
+    <p>{{error}}</p>
+{{/if}}
+</script>
+<script type="text/javascript">
+var source = document.getElementById('tpl').innerHTML;
+var template = Handlebars.compile(source);
+var context = {
+    _list:['HTML5','CSS3',"WebGL"],
+    "error":"数据取出错误"
+}
+var html = template(context);
+document.body.innerHTML = html;
+</script>
+</body>
+</html>

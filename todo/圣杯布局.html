@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style type="text/css">
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{margin:0;padding:0;}
+body{font-size:12px;}
+img{border:none;}
+ul,ol{list-style:none;}
+input,select,textarea{outline:none; border:none; background:#FFF;}
+textarea{resize:none;}
+a{text-decoration:none;}
+
+/*清浮动*/
+.clearfix:after{content:""; clear:both; display:block; height:0; visibility:hidden;}
+.clearfix{zoom:1;}
+
+body{background: #272822;}
+
+.fl{float: left;}
+.h200{height: 200px;}
+
+.left,.right{position: relative;}
+
+.left{width: 360px; margin-left: -100%; background: #0af; }
+.right{width: 480px; margin-left: -100%; left: 370px; background: #ccc;}
+.center{background: green; width: 100%;}
+.center .content{background: yellow; margin: 0 0 0 860px;}
+</style>
+</head>
+<body>
+    <div class="center fl h200">
+        <div class="content h200"></div>
+    </div>
+    <div class="left fl h200"></div>
+    <div class="right fl h200"></div>
+</body>
+</html>

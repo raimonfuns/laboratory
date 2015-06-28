@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<script type="text/javascript">
+var ls=localStorage;
+var data={
+  user:"John",
+  sex:"female"
+};
+ls.setItem('data',data);
+ls.setItem('realData',JSON.stringify(data));
+console.info(ls.data); //[object Object]
+console.info(ls.realData); //{"user":"John","sex":"female"}
+</script>    
+</body>
+</html>

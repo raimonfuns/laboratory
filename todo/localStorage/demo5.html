@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+if (!(window.localStorage && window.localStorage.getItem)) {
+    alert("该浏览器不支持localStorage本地存储");
+} else {
+    var ls = localStorage;
+    var json = {name : 'raimonfuns', age: 24};
+    ls.setItem('data', JSON.stringify(json));
+    console.log(JSON.parse(ls.getItem('data')));
+}
+</script>    
+</body>
+</html>

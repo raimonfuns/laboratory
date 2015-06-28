@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+var FIVE_MB=Array(5*1024*512).join('囧');
+try{
+  localStorage.setItem('x',FIVE_MB);
+}catch(e){
+  console.info('Oops');
+}
+</script>    
+</body>
+</html>

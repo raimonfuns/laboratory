@@ -1,0 +1,9 @@
+@charset "urf-8";
+body {
+  background: #0af;
+}
+div {
+  width: 100px;
+  height: 200px;
+  background: #000;
+}

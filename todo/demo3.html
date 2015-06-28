@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+
+<!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<![endif]-->
+
+<style type="text/css">
+/*css reset*/
+html,body{height: 100%;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{margin:0;padding:0;}
+body{font-size:12px;color:#333}
+img{border:none;}
+ul,ol{list-style:none;}
+input,select,textarea{outline:none; border:none; background:#FFF;}
+textarea{resize:none;}
+a{text-decoration:none;color:#333}
+/*清浮动*/
+.clearfix:after{content:"";display:block;visibility:hidden;clear:both;}
+.clearfix{zoom:1;}
+
+/*公共样式*/
+.fl{float: left;}
+/*布局*/
+.container{height: 100%;}
+.blk-aside,
+.blk-list{position: relative; height: 100%;}
+.blk-aside{width: 230px; margin-left: -100%; border-right: 1px solid #ccc;}
+.blk-list{width: 230px; margin-left: -100%; left: 231px; border-right: 1px solid #ccc;}
+.blk-note{width: 100%; height: 100%;}
+.blk-note .note-cont{margin-left: 462px;}
+@media screen and (max-width: 1000px) {
+    body{width: 1000px;}
+}
+
+/*头部*/
+header{width: 100%; height: 60px;}
+header h1{height: 58px; line-height: 58px; border: 1px solid #ccc; text-indent: 12px; color: #999; background: #ddd;}
+
+/*笔记列表栏*/
+.blk-aside h2, 
+.note-list h3{font-size: 14px; font-weight: 200;}
+.blk-aside h2{padding: 27px 0 0 11px;}
+.blk-aside .list-content h3{padding: 21px 0 0 12px;}
+.blk-aside .note-list{padding: 7px 0 0 19px;}
+.blk-aside .notebook{line-height: 28px;}
+.blk-aside .notebook .list-item{display: block;}
+.blk-aside .notebook .ico-book{padding-left: 32px; background: url(images/icon.png) left 9px no-repeat;}
+.blk-aside .notebook .ico-book-sec{margin-left: 21px; padding-left: 21px; background: url(images/icon.png) left -20px no-repeat;}
+.blk-aside .notebook .ico-book:hover .ico-delete,
+.blk-aside .notebook .ico-book-sec:hover .ico-delete{display: block;}
+.ico-delete{display: none; float: right; width: 12px; height: 12px; margin-top: 8px; padding-right: 18px; background: url(images/icon.png) left -55px no-repeat;}
+.addBtnWrap{width: 230px; height: 40px; line-height: 40px; position: absolute; bottom: 0; left: 0; border-top: 1px solid #ccc;}
+.addBtnWrap .addBtn{display: block; width: 100px; margin-left: 17px; text-indent: 29px; cursor: pointer; font-size: 14px; background: url(images/icon.png) left -71px no-repeat;}
+
+/*进度*/
+.process{width: 229px; height: 40px; background: #eee; border-bottom: 1px solid #ccc;}
+.process-list{width:156px; margin: 0 auto; padding: 10px 0;}
+.process-list .list-item{float: left; padding: 0 4px;}
+.process-list .list-item a{display: block; width: 42px; height: 20px; line-height: 20px; text-align: center; border: 1px solid #eee;}
+.process-list .list-item .active{ background: #fff; border-color: #ccc;}
+.process .title{line-height: 28px; background: #fafaee; text-indent: 20px;}
+.process .noteTitle{line-height: 28px; text-indent: 35px;}
+.process .noteTitle a{display: block;}
+
+/*任务详情、编辑*/
+.titleWrap{background: #f2f2f2; border-bottom: 1px solid #ccc;}
+.note-title,
+.date{line-height: 52px; text-indent: 16px;}
+.note-title{float: left; width: 50%;}
+.note-cont .date{background: #fafaee;}
+.main-content{padding: 16px;}
+.note-btn{float: right; padding: 12px 12px 0 0; width: 73px;}
+.note-btn a{float: left; display: block; width: 25px; height: 25px; background: red;}
+.note-btn .done{margin-right: 23px; background: url(images/icon.png) left -120px no-repeat;}
+.note-btn .edit{background: url(images/icon.png) left -163px no-repeat;}
+</style>
+</head>
+<body>
+    <header>
+        <h1>GTD Tools</h1>
+    </header>   
+    <div class="container clearfix">
+        <div class="blk-note fl">
+            <div class="note-cont">
+                <div class="titleWrap clearfix">
+                    <h2 class="note-title">to-do1</h2>
+                    <ul class="note-btn">
+                        <li><a href="#" class="done"></a></li>
+                        <li><a href="#" class="edit"></a></li>
+                    </ul>
+                </div>
+                <h3 class="date">任务日期：2015-04-30</h3>
+                <p class="main-content">完成task3的编码工作。</p>
+            </div>
+        </div>
+        <div class="blk-aside fl">
+            <h2>所有任务（11）</h2>
+            <div class="list-content">
+                <h3>分类列表</h3>
+                <ul class="note-list">
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>百度IFE项目</span><span> (10) </span><i class="ico-delete"></i></a>
+                        <ul>
+                            <li class="notebook">
+                                <a href="#" class="list-item ico-book-sec"><span>task1</span><span> (6) </span><i class="ico-delete"></i></a>
+                            </li>
+                            <li class="notebook">
+                                <a href="#" class="list-item ico-book-sec"><span>task2</span><span> (4)</span><i class="ico-delete"></i></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>毕业设计</span><span> (1)</span><i class="ico-delete"></i></a>
+                    </li>
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>社团活动</span><span> (0) </span><i class="ico-delete"></i></a>
+                    </li>
+                    <li class="notebook">
+                        <a href="#" class="list-item ico-book"><span>默认分类</span><span> (0) </span><i class="ico-delete"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="addBtnWrap"><a class="addBtn">新增分类</a></div>
+        </div>
+        <div class="blk-list fl">
+            <div class="process">
+                <ul class="process-list clearfix">
+                    <li class="list-item"><a href="#" class="active">所有</a></li>
+                    <li class="list-item"><a href="#">未完成</a></li>
+                    <li class="list-item"><a href="#">已完成</a></li>
+                </ul>
+                <div class="cont">
+                    <h3 class="title">2015-04-28</h3>
+                    <ul>
+                        <li class="noteTitle"><a href="#">to-do1</a></li>
+                        <li class="noteTitle"><a href="#">to-do2</a></li>
+                    </ul>
+                    <h3 class="title">2015-04-27</h3>
+                    <ul>
+                        <li class="noteTitle"><a href="#">to-do1</a></li>
+                        <li class="noteTitle"><a href="#">to-do2</a></li>
+                    </ul>
+                    <h3 class="title">2015-04-26</h3>
+                    <ul>
+                        <li class="noteTitle"><a href="#">to-do1</a></li>
+                        <li class="noteTitle"><a href="#">to-do2</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="addBtnWrap"><a class="addBtn">新增任务</a></div>
+        </div>
+    </div>
+</body>
+</html>

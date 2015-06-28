@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div id="div1"></div>
+<script type="text/javascript">
+// console.log(window.div1);
+
+if (!(window.localStorage && window.localStorage.getItem)) {
+    alert("该浏览器不支持localStorage");
+} else {
+    var ls = localStorage;
+    ls['user'] = 'raimonfuns';
+    ls.setItem('work', 'codding');
+    log(ls.length);
+    log(ls['user'] + ' is ' + ls.getItem('work'));
+    delete ls['work'];
+    for (var i in ls) {
+        // log(i + ' : ' + ls.getItem(i));
+        log(i + ' : ' + ls[i]);
+        ls.removeItem(i);
+    }
+    log('ls.length: ' + ls.length);
+    log(ls.getItem('user'));
+    log(ls['user']);
+    ls['user'] = 'raimonfuns';
+}
+function log(value) {
+    alert(value);
+}
+</script>
+</body>
+</html>

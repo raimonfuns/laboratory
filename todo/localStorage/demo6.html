@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+if (!(window.localStorage && window.localStorage.getItem)) {
+    alert("该浏览器不支持localStorage本地存储");
+} else {
+    var ls = localStorage;
+    // var taskData = {'total': 3, 'rows': [
+    //     {dataTitle: '2015-04-11', taskList: ['to-do1','to-do2']},
+    //     {dataTitle: '2015-04-12', taskList: ['to-do1','to-do2']},
+    //     {dataTitle: '2015-04-13', taskList: ['to-do1','to-do2']}
+    // ]};
+    // ls.clear();
+    // ls.setItem('/1', JSON.stringify(taskData));
+    // console.log(JSON.parse(ls.getItem('/1')));
+    console.log(ls);
+}
+</script>    
+</body>
+</html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+
+<!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<![endif]-->
+
+<style type="text/css">
+/*css reset*/
+html,body{height: 100%;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{margin:0;padding:0;}
+body{font-size:12px;color:#333}
+img{border:none;}
+ul,ol{list-style:none;}
+input,select,textarea{outline:none; border:none; background:#FFF;}
+textarea{resize:none;}
+a{text-decoration:none;color:#333}
+/*清浮动*/
+.clearfix:after{content:"";display:block;visibility:hidden;clear:both;}
+.clearfix{zoom:1;}
+
+/*公共样式*/
+.fl{float: left;}
+/*布局*/
+.wrap{height: 100%;}
+.blk-aside,
+.blk-list{position: relative; height: 100%;}
+.blk-aside{width: 230px; margin-left: -100%; border-right: 1px solid #ccc;}
+.blk-list{width: 230px; margin-left: -100%; left: 231px; border-right: 1px solid #ccc;}
+.blk-task{width: 100%; height: 100%;}
+.blk-task .task-cont{margin-left: 462px; height: 100%;}
+@media screen and (max-width: 1000px) {
+    body{width: 1000px;}
+}
+
+/*头部*/
+header{width: 100%; height: 60px;}
+header h1{height: 58px; line-height: 58px; border: 1px solid #ccc; text-indent: 12px; color: #999; background: #ddd;}
+
+/*笔记列表栏*/
+.blk-aside h2, 
+.note-list h3{font-size: 14px; font-weight: 200;}
+.blk-aside h2{padding: 27px 0 0 11px;}
+.list-content h3{padding: 21px 0 0 12px;}
+.note-list{padding: 7px 0 0 19px;}
+.TaskCategory{line-height: 28px;}
+.TaskCategory .list-item{display: block;}
+.ico-task{padding-left: 32px; background: url(images/icon.png) left 9px no-repeat;}
+.TaskCategory .on{background-color: #ddd;}
+.ico-task-sec{margin-left: 21px; padding-left: 21px; background: url(images/icon.png) left -20px no-repeat;}
+.ico-task:hover,.ico-task-sec:hover{background-color: #eee;}
+.ico-task:hover .ico-delete,
+.ico-task-sec:hover .ico-delete{display: inline-block;}
+.TaskCategory-fold ul{display: none;}
+.ico-delete{display: none; float: right; width: 12px; height: 12px; margin-top: 8px; padding-right: 18px; background: url(images/icon.png) left -55px no-repeat;}
+.addBtnWrap{width: 230px; height: 40px; line-height: 40px; position: absolute; bottom: 0; left: 0; border-top: 1px solid #ccc;}
+.addBtnWrap .addBtn{display: block; width: 100px; margin-left: 17px; text-indent: 29px; cursor: pointer; font-size: 14px; background: url(images/icon.png) left -71px no-repeat;}
+
+/*进度*/
+.process{width: 229px; height: 40px; background: #eee; border-bottom: 1px solid #ccc;}
+.process-list{width:156px; margin: 0 auto; padding: 10px 0;}
+.process-list .list-item{float: left; padding: 0 4px;}
+.process-list .list-item a{display: block; width: 42px; height: 20px; line-height: 20px; text-align: center; border: 1px solid #eee;}
+.process-list .list-item .active{ background: #fff; border-color: #ccc;}
+.process .taskTime{line-height: 28px; background: #fafaee; text-indent: 20px;}
+.process .noteTitle{line-height: 28px; text-indent: 35px;}
+.process .noteTitle a{display: block;}
+.process .on{background: #ddd;}
+
+/*任务详情、编辑*/
+.titleWrap{background: #f2f2f2; border-bottom: 1px solid #ccc;}
+.task-title-text,
+.task-title-input,
+.task-date-text,
+.task-date-input{line-height: 52px; text-indent: 16px;}
+.task-title-text,
+.task-title-input{float: left; width: 80%;}
+.task-cont .task-date-text{background: #fafaee;}
+.main-content{padding: 16px;}
+.task-btn{float: right; padding: 12px 12px 0 0; width: 73px;}
+.task-btn a{float: left; display: block; width: 25px; height: 25px; line-height: 25px;}
+.task-btn .ok,
+.task-btn .done{margin-right: 23px;}
+.task-btn .done{background: url(images/icon.png) left -120px no-repeat;}
+.task-btn .edit{background: url(images/icon.png) left -163px no-repeat;}
+
+/*编辑模式*/
+.task-title-input,
+.task-date-input,
+.content-textarea{display: none;}
+.task-title-input input{background: #f2f2f2; width: 100%;}
+.task-title-input input,
+.task-date-input label,
+.task-date-input input,
+.content-textarea textarea{font-size: 16px;}
+.content-textarea{height: 300px; padding-left: 15px;}
+.content-textarea textarea{width: 100%; height: 100%;}
+.edit-switch-btn{display: none;}
+
+.edit-mode .task-title-text,
+.edit-mode .task-date-text,
+.edit-mode .main-content,
+.edit-mode .switch-btn
+{display: none;}
+.edit-mode .task-title-input,
+.edit-mode .task-date-input,
+.edit-mode .content-textarea,
+.edit-mode .edit-switch-btn{display: block;}
+</style>
+</head>
+<body>
+    <header>
+        <h1>GTD Tools</h1>
+    </header>   
+    <div id="wrap" class="wrap clearfix">
+        <div class="blk-task fl">
+            <div class="task-cont">
+                <div class="titleWrap clearfix">
+                    <div class="task-title">
+                        <h2 class="task-title-text"></h2>
+                        <span class="task-title-input">
+                            <input id="title-input" type="text" placeholder="请输入任务名称">
+                        </span>
+                        <div class="btn-wrap">
+                            <ul class="task-btn switch-btn">
+                                <li><a href="#" class="done"></a></li>
+                                <li><a href="#" class="edit"></a></li>
+                            </ul> 
+                            <ul class="task-btn edit-switch-btn">
+                                <li><a href="#" class="prompt-btn ok">确认</a></li>
+                                <li><a href="#" class="prompt-btn cancel">取消</a></li>
+                            </ul> 
+                        </div>  
+                    </div>  
+                </div>
+                <div class="task-date">
+                    <h3 class="task-date-text"></h3>
+                    <span class="task-date-input">
+                        <label>任务日期：</label><input id="date-input" type="text" placeholder="请输入任务日期">
+                    </span>
+                </div>
+                <div class="taskContent">
+                    <p class="main-content"></p>
+                    <span class="content-textarea">
+                        <textarea id="content-textarea" placeholder="请输入任务内容"></textarea>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="blk-aside fl">
+            <h2>所有任务（11）</h2>
+            <div class="list-content">
+                <h3>分类列表</h3>
+                <ul class="note-list">
+                    <li class="TaskCategory group task-dft" data-id="/0">
+                        <a href="#" class="list-item on ico-task"><span>默认分类</span><span> (0) </span><i class="ico-delete"></i></a>
+                    </li>
+                    <!-- <li class="TaskCategory group TaskCategory-fold" data-id="/1">
+                        <a href="#" class="list-item ico-task"><span>百度IFE项目</span><span> (10) </span><i class="ico-delete"></i></a>
+                        <ul>
+                            <li class="TaskCategory">
+                                <a href="#" class="list-item ico-task-sec"><span>task1</span><span> (6) </span><i class="ico-delete"></i></a>
+                            </li>
+                            <li class="TaskCategory">
+                                <a href="#" class="list-item ico-task-sec"><span>task2</span><span> (4)</span><i class="ico-delete"></i></a>
+                            </li>
+                        </ul>
+                    </li> -->
+                </ul>
+            </div>
+            <div id="addCategory" class="addBtnWrap"><a class="addBtn">新增分类</a></div>
+        </div>
+        <div id="process" class="blk-list fl">
+            <div class="process">
+                <ul class="process-list clearfix">
+                    <li class="list-item"><a href="#" class="active">所有</a></li>
+                    <li class="list-item"><a href="#">未完成</a></li>
+                    <li class="list-item"><a href="#">已完成</a></li>
+                </ul>
+                <div class="cont">
+                    <ul class="cont-list">
+                        <!-- <li>
+                            <h3 class="taskTime">2015-04-28</h3>
+                            <ul>
+                                <li class="noteTitle"><a href="#">to-do1</a></li>
+                                <li class="noteTitle"><a href="#">to-do2</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3 class="taskTime">2015-04-27</h3>
+                            <ul>
+                                <li class="noteTitle"><a href="#">to-do1</a></li>
+                                <li class="noteTitle"><a href="#">to-do2</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <h3 class="taskTime">2015-04-25</h3>
+                            <ul>
+                                <li class="noteTitle"><a href="#">to-do1</a></li>
+                                <li class="noteTitle"><a href="#">to-do2</a></li>
+                            </ul>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+            <div id="addTask" class="addBtnWrap"><a class="addBtn">新增任务</a></div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+function log(value) {
+    console.log(value);
+}
+
+function Gtd() {
+    this.init();
+}
+Gtd.prototype = {
+    init: function () {
+        var _this = this;
+        this.wrap = document.getElementById('wrap');
+        this.oTaskCategoryUl = this.wrap.getElementsByTagName('ul')[2];
+        this.oContentMode = this.getByClass(this.wrap, 'task-cont')[0];
+        this.sDefaultId = '/10000';
+        this.initLocalStorage();
+        this.updateCategory(this.sDefaultId);
+        this.aTaskCategory = this.oTaskCategoryUl.getElementsByTagName('li');
+        this.aListItem = this.oTaskCategoryUl.getElementsByTagName('a');
+        this.oTargetAddOn = this.getByClass(this.oTaskCategoryUl, 'on')[0]; // 当前现在的分类
+        this.aDeleteBtn = this.oTaskCategoryUl.getElementsByTagName('i');
+        this.oAddCategoryBtn = document.getElementById('addCategory');
+        this.oAddTaskBtn = document.getElementById('addTask');
+
+        this.oProcess = document.getElementById('process');
+        this.oProcessContList = this.getByClass(this.oProcess, 'cont-list')[0];
+        this.updateProcessList(this.sDefaultId); // 默认分类的id是 '/10000'
+
+        this.taskTrigger();
+        this.oAddCategoryBtn.onclick = function () {_this.addCategory.call(_this)};
+        this.oAddTaskBtn.onclick = function () {_this.addTask.call(_this)};
+    },
+    // 初始化LocalStorag
+    initLocalStorage: function () {  
+        if (!(window.localStorage && window.localStorage.getItem)) {
+            alert("该浏览器不支持localStorage本地存储");
+        } else {
+            this.ls = localStorage;
+        }
+    },
+    // 更新左侧目录
+    updateCategory: function (sCategoryId) {
+            
+        // var oCategoryStructor = {total: 1, rows:[{id: '/0', title: '默认分类', subcategory: null}, {id: '/164399', title: '目录1', subcategory: [{id: '/252501', title: '子目录1'}, {id: '/252502', title: '子目录2'}]}]};
+
+        // this.ls.setItem('categoryStructor', JSON.stringify(oCategoryStructor));
+        // log(this.ls);
+        // this.ls.clear();
+        if (!this.getItem(this.sDefaultId)) { // 用户第一次打开，初始化默认分类的id为10000，初始化目录结构数据
+            this.setItem(this.sDefaultId, {total: 0, rows: []});
+            this.setItem('categoryStructor', {"rows":[{"id":"/10000","title":"默认分类","subcategory":null}]});
+        }
+        log(this.ls);
+
+        var oData = this.getItem('categoryStructor');
+        if (!oData) { return false; }
+        var sHtmlContent = '';
+        var aRows = oData.rows;
+        for (var i = 0; i < aRows.length; i++) {
+            var oProcessData = this.getItem(aRows[i].id);
+            var count = oProcessData ? oProcessData.total : 0;
+            var sDefaultClass = (aRows[i].id === this.sDefaultId) ? 'task-dft' : '';
+            var sOnClass = (aRows[i].id === sCategoryId) ? 'on' : '';
+            sHtmlContent += '<li class="TaskCategory group ' + sDefaultClass + ' TaskCategory-fold" data-id="' + aRows[i].id + '">' +
+                                '<a href="#" class="list-item ' + sOnClass + ' ico-task"><span>' + aRows[i].title + '</span><span> (' + count + ') </span><i class="ico-delete"></i></a>';
+            if (aRows[i].subcategory) {
+                // log(aRows[i].subcategory);
+                sHtmlContent += '<ul>';
+                for (var j = 0; j < aRows[i].subcategory.length; j++) {
+                    oProcessData = this.getItem(aRows[i].subcategory[j].id);
+                    count = oProcessData ? oProcessData.total : 0;
+                    sHtmlContent += '<li class="TaskCategory group" data-id="' + aRows[i].subcategory[j].id + '">' +
+                                        '<a href="#" class="list-item ico-task-sec"><span>' + aRows[i].subcategory[j].title + '</span><span> (' + count + ') </span><i class="ico-delete"></i></a>' +
+                                    '</li>';
+                }
+                sHtmlContent += '</ul></li>';
+            } else {
+                sHtmlContent +=  '<ul></ul></li>';
+            } 
+        }
+        // log(sHtmlContent);
+        this.oTaskCategoryUl.innerHTML = sHtmlContent;
+        this.oTargetAddOn = this.getByClass(this.oTaskCategoryUl, 'on')[0]; // 更新当前现在的分类
+    },
+    // 更新中间任务进度列表
+    updateProcessList: function (sCategoryId) {
+        var _this = this;
+        var htmlContent = '';
+        var oData = this.getItem(sCategoryId);
+        var oProcessData = {};
+        var time = '';
+        if (oData) {
+            for (var i = 0; i < oData.rows.length; i++) {
+                var taskInfo = {};
+                time = oData.rows[i]['taskTime'];
+                taskInfo['taskTitle'] = oData.rows[i]['taskTitle'];
+                taskInfo['taskId'] = oData.rows[i]['taskId'];
+                if (oProcessData[time]) {
+                    oProcessData[time].push(taskInfo); 
+                } else {
+                    var arr = [];
+                    arr.push(taskInfo);
+                    oProcessData[time] = arr;
+                }
+            }
+        }
+        // log(oProcessData);
+        var keyArr = Object.keys(oProcessData).sort();
+        for (var t = 0; t < keyArr.length; t++) {
+            var taskTimeHtml =  '<h3 class="taskTime">' + keyArr[t] + '</h3>';
+            var taskTitleHtml = '';
+            for (var i = 0; i < oProcessData[keyArr[t]].length; i++) {
+                // 默认打开第一个任务的信息内容
+                if (t === 0 && i === 0) {
+                    _this.updateTaskInfo(oProcessData[keyArr[t]][0]['taskId']);
+                    var sSelectClass = ' on';
+                }  else {
+                    var sSelectClass = '';
+                }
+                taskTitleHtml += '<li class="noteTitle' + sSelectClass + '" task-id='+ oProcessData[keyArr[t]][i]['taskId'] +' ><a href="#">' + oProcessData[keyArr[t]][i]['taskTitle'] + '</a></li>';
+            }
+            htmlContent += taskTimeHtml + '<ul>' + taskTitleHtml + '</ul>';
+        }
+        this.oProcessContList.innerHTML = htmlContent;
+        
+        // 点击查看任务详细内容
+        var aTaskLi = this.getByClass(this.oProcessContList, 'noteTitle');
+        for (var i = 0; i < aTaskLi.length; i++) {
+            aTaskLi[i].onclick = function () {
+                for (var j = 0; j < aTaskLi.length; j++) {
+                    _this.removeClass(aTaskLi[j], 'on');
+                }
+                _this.addClass(this, 'on');
+                _this.updateTaskInfo(this.getAttribute('task-id'));
+            }
+        }
+    },
+    // 更新任务详细信息
+    updateTaskInfo: function (sTaskId) {
+        var sCategoryId = this.oTargetAddOn.parentNode.getAttribute('data-id');
+        var oCategoryData = this.getItem(sCategoryId);
+        var oTaskData;
+        var sHtmlContent = '';
+        var oTitle = this.getByClass(this.oContentMode, 'task-title-text')[0];
+        var oDate = this.getByClass(this.oContentMode, 'task-date-text')[0];
+        var oContent = this.getByClass(this.oContentMode, 'main-content')[0];
+        for (var i = 0; i < oCategoryData.rows.length; i++) {
+            if (oCategoryData.rows[i].taskId === sTaskId) {
+                oTaskData = oCategoryData.rows[i];
+            }
+        }
+        // log('sCategoryId: ' + sCategoryId);
+        // log(oTaskData);
+        if (!oTaskData) {
+            this.addTask();
+        } else {
+            this.removeClass(this.oContentMode, 'edit-mode');
+            oTitle.innerHTML = oTaskData['taskTitle'];
+            oDate.innerHTML = oTaskData['taskTime'];
+            oContent.innerHTML = oTaskData['taskContent'];
+        }
+    },
+    // 左侧按键展开、收起事件
+    taskTrigger: function () {
+        var _this = this;
+        for (var i = 0; i < this.aListItem.length; i++) {
+            this.oTaskCategoryUl.onclick = function (ev) {
+                var oEvent = ev || event;
+                var oTarget = oEvent.target || oEvent.srcElement;
+                var tagName = oTarget.tagName.toLowerCase();
+                var oTaskCategory = null;
+                if (tagName === 'a') {  // 按下a标签
+                    _this.oTargetAddOn = oTarget;
+                    oTaskCategory = oTarget.parentNode;
+                } else if (tagName === 'span') {    // 按下span标签    
+                    _this.oTargetAddOn = oTarget.parentNode;
+                    oTaskCategory = oTarget.parentNode.parentNode;
+                } else if (tagName === 'i') {   // 按下删除按键
+                    if (_this.hasClass(oTarget.parentNode.parentNode, 'task-dft')) { // 默认分类不能删除
+                        alert("默认分类不能删除");
+                    } else {
+                        if (confirm("你确定删除《" + oTarget.parentNode.children[0].innerHTML + "》分类吗?")) {
+                            var sId = oTarget.parentNode.parentNode.getAttribute('data-id');
+                            var oSaveStructorData = _this.getItem('categoryStructor');
+                            var oSaveTaskData = _this.getItem(sId);
+                            if (!_this.hasClass(oTarget.parentNode, 'ico-task-sec')) { // 删除主目录
+                                var aSubId = [];
+                                for (var i = 0; i < oSaveStructorData.rows.length; i++) { // 删除该主目录下所有子目录对应的任务
+                                    if (oSaveStructorData.rows[i].id === sId) {
+                                        var sSubcategory = oSaveStructorData.rows[i].subcategory;
+                                        if (sSubcategory) {
+                                            for (var j = 0; j < sSubcategory.length; j++) {
+                                                delete oSaveTaskData[sSubcategory[j].id];
+                                                log('delete 子分类 id' + sSubcategory[j].id);
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                                delete _this.ls[sId]; // 删除主目录对应的任务
+                                log('delete 主分类 id' + sId);
+                                for (var i = 0; i < oSaveStructorData.rows.length; i++) { // 删除主目录对应目录结构
+                                    if (oSaveStructorData.rows[i]['id'] === sId) {
+                                        oSaveStructorData.rows.splice(i, 1);
+                                        log('delete 主分类的结构id' + sId);
+                                    }
+                                }
+                                _this.setItem('categoryStructor', oSaveStructorData);
+                                _this.updateCategory(_this.sDefaultId);
+                                _this.updateProcessList(_this.sDefaultId);
+                            } else {
+                                var sParentId = oTarget.parentNode.parentNode.parentNode.parentNode.getAttribute('data-id');
+                                var oSaveParentTaskData = _this.getItem(sParentId);
+                                var aChildDeleteTask = [];
+                                // 删除主目录包含的子目录的任务
+                                for (var i = 0; i < oSaveTaskData.rows.length; i++) {
+                                    aChildDeleteTask.push(oSaveTaskData.rows[i].taskId); // 储存主目录需要删除的任务
+                                }
+                                log("主目录需要删除的任务: " + aChildDeleteTask);
+                                for (var i = 0; i < oSaveParentTaskData.rows.length; i++) {
+                                    for (var j = 0; j < aChildDeleteTask.length; j++) {
+                                        if (oSaveParentTaskData.rows[i].taskId === aChildDeleteTask[j]) {
+                                            log("主目录删除了id为：" + oSaveParentTaskData.rows[i].taskId + '的任务');
+                                            log('aChildDeleteTask[j]: ' + aChildDeleteTask[j]);
+                                            oSaveParentTaskData.rows.splice(i, 1);
+                                            oSaveParentTaskData.total--;
+                                        }
+                                    }
+                                }
+                                delete _this.ls[sId]; // 删除子目录对应的任务
+                                log('delete 子分类 id' + sId);
+                                log('主结构不删除,id是: ' + sParentId);
+                                for (var i = 0; i < oSaveStructorData.rows.length; i++) { // 删除子目录对应目录结构
+                                    if (oSaveStructorData.rows[i]['id'] === sParentId) {
+                                        for (var j = 0; j < oSaveStructorData.rows[i]['subcategory'].length; j++) {
+                                            if (oSaveStructorData.rows[i]['subcategory'][j]['id'] === sId) {
+                                                oSaveStructorData.rows[i]['subcategory'].splice(j, 1);
+                                                log('delete 子分类的结构id' + sId); 
+                                            }
+                                        } 
+                                    }
+                                }
+                                _this.setItem('categoryStructor', oSaveStructorData);
+                                _this.setItem(sParentId, oSaveParentTaskData);
+                                _this.updateCategory(sParentId);
+                                _this.updateProcessList(sParentId);
+                            }
+                        }   
+                    }
+                    return false;
+                }
+                _this.hasClass(oTaskCategory, 'TaskCategory-fold') ? _this.removeClass(oTaskCategory, 'TaskCategory-fold') : _this.addClass(oTaskCategory, 'TaskCategory-fold');
+                if (!_this.hasClass(_this.oTargetAddOn, 'on')) {
+                    for (var i = 0; i < _this.aListItem.length; i++) {
+                        _this.removeClass(_this.aListItem[i], 'on');
+                    }
+                    _this.addClass(_this.oTargetAddOn, 'on');
+                    _this.removeClass(oTaskCategory, 'TaskCategory-fold');
+                    _this.updateProcessList.call(_this, _this.oTargetAddOn.parentNode.getAttribute('data-id'));
+                }
+            }
+        }
+    },
+    // 添加目录
+    addCategory: function () {
+        var sCategoryName = prompt('请输入分类名称');
+        if (!sCategoryName) { return false; }
+        var _this = this;
+        var oLi = document.createElement('li');
+        var sRandomId = '/' + parseInt(Math.random()*1000000);
+        var oCategoryData = {id: sRandomId, title: sCategoryName, subcategory: null};
+        var oSaveData = this.getItem('categoryStructor');
+
+        oLi.className = 'TaskCategory';
+        oLi.setAttribute('data-id', sRandomId);
+        if (this.hasClass(this.oTargetAddOn.parentNode, 'task-dft')) { // 选择默认分类时，创建一个新分类
+            oLi.innerHTML = '<a href="#" class="list-item ico-task"><span>' + sCategoryName + '</span><span> (0)</span><i class="ico-delete"></i></a><ul></ul>';
+            this.oTaskCategoryUl.appendChild(oLi);
+            oSaveData.rows.push(oCategoryData);
+            // log(this.ls);
+        } else { // 非默认分类时，在内部创建新分类
+            var sId = '';
+
+            oLi.innerHTML = '<a href="#" class="list-item ico-task-sec"><span>' + sCategoryName + '</span><span> (0)</span><i class="ico-delete"></i></a>';
+            if (this.hasClass(this.oTargetAddOn, 'ico-task-sec')) { // 给当前ul添加分类
+                sId = this.oTargetAddOn.parentNode.parentNode.parentNode.getAttribute('data-id');
+                this.oTargetAddOn.parentNode.parentNode.appendChild(oLi);
+            } else { // 给子分类的ul添加分类
+                sId = this.oTargetAddOn.parentNode.getAttribute('data-id');
+                this.removeClass(this.oTargetAddOn.parentNode, 'TaskCategory-fold');
+                if (this.oTargetAddOn.nextElementSibling) {
+                    this.oTargetAddOn.nextElementSibling.appendChild(oLi);
+                } else {
+                    this.oTargetAddOn.nextSibling.appendChild(oLi);
+                }
+            }
+
+            for (var i = 0; i < oSaveData.rows.length; i++) {
+                if (oSaveData.rows[i]['id'] === sId) {
+                    var oSubcategoryData = {id: sRandomId, title: sCategoryName};
+                    aOldSubcategoryData = oSaveData.rows[i].subcategory || [];
+                    aOldSubcategoryData.push(oSubcategoryData);
+                    oSaveData.rows[i].subcategory = aOldSubcategoryData;
+                }
+            }
+        }
+        this.setItem('categoryStructor', oSaveData);
+    },
+    // 添加任务
+    addTask: function () {
+        var _this = this;
+        var oOkBtn = _this.getByClass(_this.oContentMode, 'prompt-btn')[0];
+        var oCancel = _this.getByClass(_this.oContentMode, 'prompt-btn')[1];
+        var oTitleInput = document.getElementById('title-input');
+        var oDateInput = document.getElementById('date-input');
+        var oContentTextarea = document.getElementById('content-textarea');
+        _this.addClass(_this.oContentMode, 'edit-mode');
+        oOkBtn.onclick = function () {
+            // log('oTitleInput:' + oTitleInput.value);
+            // log('oDateInput:' + oDateInput.value);
+            // log('oContentTextarea:' + oContentTextarea.value);  
+            var sId = _this.oTargetAddOn.parentNode.getAttribute('data-id');
+            var oSaveData = _this.getItem(sId) ? _this.getItem(sId) : {total: 0, rows:[]};
+            var oTemp = {};
+            var sTaskRandomId = '/' + parseInt(Math.random()*1000000);
+            oSaveData.total++;
+            oTemp.taskId = sTaskRandomId;
+            oTemp.taskTitle = oTitleInput.value;
+            oTemp.taskTime = oDateInput.value;
+            oTemp.taskContent = oContentTextarea.value;
+            oSaveData.rows.push(oTemp);
+            if (_this.hasClass(_this.oTargetAddOn, 'ico-task-sec')) { // 添加到子分类的同时，也是添加到主分类
+                var sParentId = _this.oTargetAddOn.parentNode.parentNode.parentNode.getAttribute('data-id');
+                var oParentSaveData = _this.getItem(sParentId) ? _this.getItem(sParentId) : {total: 0, rows:[]};
+                var oParent = _this.oTargetAddOn.parentNode.parentNode.previousSibling ? 
+                _this.oTargetAddOn.parentNode.parentNode.previousSibling :
+                _this.oTargetAddOn.parentNode.parentNode.previousElementSibling;
+                oParentSaveData.total++;
+                oParent.children[1].innerHTML = ' (' + oParentSaveData.total + ') ';
+                oParentSaveData.rows.push(oTemp);
+                _this.setItem(sParentId, oParentSaveData);
+            }
+            _this.setItem(sId, oSaveData);
+            _this.oTargetAddOn.children[1].innerHTML = ' (' + oSaveData.total + ') ';
+            _this.updateProcessList(sId);
+            _this.removeClass(_this.oContentMode, 'edit-mode');
+            oTitleInput.value = "";
+            oDateInput.value = "";
+            oContentTextarea.value = "";
+            // log('sId: ' + sId);
+            // log(_this.getItem(sId));
+        }
+        oCancel.onclick = function () {
+            _this.removeClass(_this.oContentMode, 'edit-mode');
+            oTitleInput.value = "";
+            oDateInput.value = "";
+            oContentTextarea.value = "";
+        }
+    },
+    // 获取本地数据，参数为目录id
+    getItem: function (sId) {
+        return JSON.parse(this.ls.getItem(sId));
+    },
+    // 设置本地数据，参数为目录id和对应的数据
+    setItem: function (sId, oData) {
+        this.ls.setItem(sId, JSON.stringify(oData));
+    },
+    // 通过class获取元素
+    getByClass: function (oElement, sClassName) {
+        var elements = oElement.getElementsByTagName('*');
+        var aResult = [];
+        for (var i = 0; i < elements.length; i++) {
+            if (this.hasClass(elements[i], sClassName)) {
+                aResult.push(elements[i]);
+            }
+        }
+        return aResult;
+    },
+    // 去掉前后空格
+    trim: function (str) {
+        return str.replace(/^\s+|\s+$/g,'');
+    },
+    // 获取元素的所有class，一数组的形式返回
+    getClassNames: function (oElement) {
+        if (!oElement) {return false;}
+        return this.trim(oElement.className).replace(/\s+/g, ' ').split(' ');
+    },
+    // 为元素添加相应class
+    addClass: function (oElement, sClassName) {
+        if (!oElement || !sClassName) {return false;}
+        var aClassName = this.getClassNames(oElement);
+        if (this.inArray(sClassName, aClassName) != -1) {return false;}
+        oElement.className += (oElement.className ? ' ' : '')+ sClassName;
+    },
+    // 为元素移除相应class
+    removeClass: function (oElement, sClassName) {
+        if (!oElement || !sClassName) {return false;}
+        var aClassName = this.getClassNames(oElement);
+        var length = aClassName.length;
+        for (var i = 0; i < length; i++) {
+            if (aClassName[i] === sClassName) {
+                aClassName.splice(i, 1);
+            }
+        }
+        oElement.className = aClassName.join(' ');
+        return (length === aClassName.length) ? false : true;
+    },
+    // 判断元素是否在数组中
+    inArray: function (value, array) {
+        // if (!this.isArray(array)) {return false;}
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function(elt /*, from*/) {
+                var len = this.length >>> 0; // 利用位运算中的无符号右移操作符进行转型
+
+                var from = Number(arguments[1]) || 0;
+                from = (from < 0)
+                     ? Math.ceil(from)
+                     : Math.floor(from);
+                if (from < 0)
+                  from += len;
+
+                for (; from < len; from++) {
+                  if (from in this &&
+                      this[from] === elt)
+                    return from;
+                }
+                return -1;
+            };
+        }
+        return array.indexOf(value, arguments[2]);
+    },
+    // 判断元素是否有指定class
+    hasClass: function (oElement, sClassName) {
+        var aClassName = this.getClassNames(oElement);
+        return this.inArray(sClassName, aClassName) != -1;
+    },
+    // 判断是否为数组
+    isArray: function (array) {
+        var str = Object.prototype.toString.call(array).slice(8,-1).toLowerCase();
+        if (str == "array") { return true; }
+        else { return false; }
+    },
+    // 变量数组
+    each: function (arr, fn) {
+        if (!this.isArray(arr)) { return false; }
+        if (typeof fn !== 'function') { return false; }
+        for (var i = 0; i < arr.length; i++) {
+            fn(i, arr[i]);
+        }
+    }
+}
+window.onload = function () {
+    new Gtd();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+
+<!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<![endif]-->
+
+<style type="text/css">
+/*css reset*/
+html,body{height: 100%;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{margin:0;padding:0;}
+body{font-size:12px;color:#333}
+img{border:none;}
+ul,ol{list-style:none;}
+input,select,textarea{outline:none; border:none; background:#FFF;}
+textarea{resize:none;}
+a{text-decoration:none;color:#333}
+/*清浮动*/
+.clearfix:after{content:"";display:block;visibility:hidden;clear:both;}
+.clearfix{zoom:1;}
+
+/*公共样式*/
+.fl{float: left;}
+/*布局*/
+.wrap{height: 100%;}
+.blk-aside,
+.blk-list{position: relative; height: 100%;}
+.blk-aside{width: 230px; margin-left: -100%; border-right: 1px solid #ccc;}
+.blk-list{width: 230px; margin-left: -100%; left: 231px; border-right: 1px solid #ccc;}
+.blk-note{width: 100%; height: 100%;}
+.blk-note .note-cont{margin-left: 462px;}
+@media screen and (max-width: 1000px) {
+    body{width: 1000px;}
+}
+
+/*头部*/
+header{width: 100%; height: 60px;}
+header h1{height: 58px; line-height: 58px; border: 1px solid #ccc; text-indent: 12px; color: #999; background: #ddd;}
+
+/*笔记列表栏*/
+.blk-aside h2, 
+.note-list h3{font-size: 14px; font-weight: 200;}
+.blk-aside h2{padding: 27px 0 0 11px;}
+.list-content h3{padding: 21px 0 0 12px;}
+.note-list{padding: 7px 0 0 19px;}
+.taskFolder{line-height: 28px;}
+.taskFolder .list-item{display: block;}
+.ico-task{padding-left: 32px; background: url(images/icon.png) left 9px no-repeat;}
+.taskFolder .on{background-color: #ddd;}
+.ico-task-sec{margin-left: 21px; padding-left: 21px; background: url(images/icon.png) left -20px no-repeat;}
+.ico-task:hover,.ico-task-sec:hover{background-color: #eee;}
+.ico-task:hover .ico-delete,
+.ico-task-sec:hover .ico-delete{display: inline-block;}
+.taskFolder-fold ul{display: none;}
+.ico-delete{display: none; float: right; width: 12px; height: 12px; margin-top: 8px; padding-right: 18px; background: url(images/icon.png) left -55px no-repeat;}
+.addBtnWrap{width: 230px; height: 40px; line-height: 40px; position: absolute; bottom: 0; left: 0; border-top: 1px solid #ccc;}
+.addBtnWrap .addBtn{display: block; width: 100px; margin-left: 17px; text-indent: 29px; cursor: pointer; font-size: 14px; background: url(images/icon.png) left -71px no-repeat;}
+
+/*进度*/
+.process{width: 229px; height: 40px; background: #eee; border-bottom: 1px solid #ccc;}
+.process-list{width:156px; margin: 0 auto; padding: 10px 0;}
+.process-list .list-item{float: left; padding: 0 4px;}
+.process-list .list-item a{display: block; width: 42px; height: 20px; line-height: 20px; text-align: center; border: 1px solid #eee;}
+.process-list .list-item .active{ background: #fff; border-color: #ccc;}
+.process .title{line-height: 28px; background: #fafaee; text-indent: 20px;}
+.process .noteTitle{line-height: 28px; text-indent: 35px;}
+.process .noteTitle a{display: block;}
+
+/*任务详情、编辑*/
+.titleWrap{background: #f2f2f2; border-bottom: 1px solid #ccc;}
+.note-title,
+.date{line-height: 52px; text-indent: 16px;}
+.note-title{float: left; width: 50%;}
+.note-cont .date{background: #fafaee;}
+.main-content{padding: 16px;}
+.note-btn{float: right; padding: 12px 12px 0 0; width: 73px;}
+.note-btn a{float: left; display: block; width: 25px; height: 25px; background: red;}
+.note-btn .done{margin-right: 23px; background: url(images/icon.png) left -120px no-repeat;}
+.note-btn .edit{background: url(images/icon.png) left -163px no-repeat;}
+</style>
+</head>
+<body>
+    <header>
+        <h1>GTD Tools</h1>
+    </header>   
+    <div id="wrap" class="wrap clearfix">
+        <div class="blk-note fl">
+            <div class="note-cont">
+                <div class="titleWrap clearfix">
+                    <h2 class="note-title">to-do1</h2>
+                    <ul class="note-btn">
+                        <li><a href="#" class="done"></a></li>
+                        <li><a href="#" class="edit"></a></li>
+                    </ul>
+                </div>
+                <h3 class="date">任务日期：2015-04-30</h3>
+                <p class="main-content">完成task3的编码工作。</p>
+            </div>
+        </div>
+        <div class="blk-aside fl">
+            <h2>所有任务（11）</h2>
+            <div class="list-content">
+                <h3>分类列表</h3>
+                <ul class="note-list">
+                    <li class="taskFolder group task-dft">
+                        <a href="#" class="list-item on ico-task"><span>默认分类</span><span> (0) </span><i class="ico-delete"></i></a>
+                    </li>
+                    <li class="taskFolder group taskFolder-fold">
+                        <a href="#" class="list-item ico-task"><span>百度IFE项目</span><span> (10) </span><i class="ico-delete"></i></a>
+                        <ul>
+                            <li class="taskFolder">
+                                <a href="#" class="list-item ico-task-sec"><span>task1</span><span> (6) </span><i class="ico-delete"></i></a>
+                            </li>
+                            <li class="taskFolder">
+                                <a href="#" class="list-item ico-task-sec"><span>task2</span><span> (4)</span><i class="ico-delete"></i></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="taskFolder group taskFolder-fold">
+                        <a href="#" class="list-item ico-task"><span>毕业设计</span><span> (1) </span><i class="ico-delete"></i></a>
+                        <ul>
+                            <li class="taskFolder">
+                                <a href="#" class="list-item ico-task-sec"><span>task1</span><span> (6) </span><i class="ico-delete"></i></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="taskFolder group">
+                        <a href="#" class="list-item ico-task"><span>社团活动</span><span> (0) </span><i class="ico-delete"></i></a>
+                        <ul></ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="addCategory" class="addBtnWrap"><a class="addBtn">新增分类</a></div>
+        </div>
+        <div class="blk-list fl">
+            <div class="process">
+                <ul class="process-list clearfix">
+                    <li class="list-item"><a href="#" class="active">所有</a></li>
+                    <li class="list-item"><a href="#">未完成</a></li>
+                    <li class="list-item"><a href="#">已完成</a></li>
+                </ul>
+                <div class="cont">
+                    <h3 class="title">2015-04-28</h3>
+                    <ul>
+                        <li class="noteTitle"><a href="#">to-do1</a></li>
+                        <li class="noteTitle"><a href="#">to-do2</a></li>
+                    </ul>
+                    <h3 class="title">2015-04-27</h3>
+                    <ul>
+                        <li class="noteTitle"><a href="#">to-do1</a></li>
+                        <li class="noteTitle"><a href="#">to-do2</a></li>
+                    </ul>
+                    <h3 class="title">2015-04-26</h3>
+                    <ul>
+                        <li class="noteTitle"><a href="#">to-do1</a></li>
+                        <li class="noteTitle"><a href="#">to-do2</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="addTask" class="addBtnWrap"><a class="addBtn">新增任务</a></div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+function log(value) {
+    console.log(value);
+}
+
+function Gtd() {
+    this.init();
+}
+Gtd.prototype = {
+    init: function () {
+        var _this = this;
+        this.wrap = document.getElementById('wrap');
+        this.oTaskFolderUl = this.wrap.getElementsByTagName('ul')[1];
+        this.aTaskFolder = this.oTaskFolderUl.getElementsByTagName('li');
+        // this.aTaskFolderBtn = this.getByClass(this.oTaskFolderUl, 'ico-task');
+        this.aListItem = this.oTaskFolderUl.getElementsByTagName('a');
+        this.aDeleteBtn = this.oTaskFolderUl.getElementsByTagName('i');
+        this.oAddCategoryBtn = document.getElementById('addCategory');
+
+        this.taskTrigger();
+        this.oAddCategoryBtn.onclick = function () {_this.addCategory.call(_this)};
+    },
+    taskTrigger: function () {
+        var _this = this;
+        for (var i = 0; i < this.aListItem.length; i++) {
+            this.oTaskFolderUl.onclick = function (ev) {
+                var oEvent = ev || event;
+                var oTarget = oEvent.target || oEvent.srcElement;
+                var tagName = oTarget.tagName.toLowerCase();
+                var oTaskFolder = null;
+                var oTargetAddOn = null;
+                if (tagName === 'a') {  // 按下a标签
+                    oTargetAddOn = oTarget;
+                    oTaskFolder = oTarget.parentNode;
+                } else if (tagName === 'span') {    // 按下span标签    
+                    oTargetAddOn = oTarget.parentNode;
+                    oTaskFolder = oTarget.parentNode.parentNode;
+                } else if (tagName === 'i') {   // 按下删除按键
+                    if (_this.hasClass(oTarget.parentNode.parentNode, 'task-dft')) { // 默认分类不能删除
+                        alert("默认分类不能删除");
+                    } else {
+                        if (confirm("你确定删除《" + oTarget.parentNode.children[0].innerHTML + "》分类吗?")) {
+                            oTarget.parentNode.parentNode.parentNode.removeChild(oTarget.parentNode.parentNode);
+                        }
+                    }
+                    return false;
+                }
+                _this.hasClass(oTaskFolder, 'taskFolder-fold') ? _this.removeClass(oTaskFolder, 'taskFolder-fold') : _this.addClass(oTaskFolder, 'taskFolder-fold');
+                if (!_this.hasClass(oTargetAddOn, 'on')) {
+                    for (var i = 0; i < _this.aListItem.length; i++) {
+                        _this.removeClass(_this.aListItem[i], 'on');
+                        // log(_this.aListItem.length); 
+                    }
+                    _this.addClass(oTargetAddOn, 'on');
+                }
+            }
+        }
+    },
+    addCategory: function () {
+        var _this = this;
+        var CategoryName = prompt('请输入分类名称');
+        var oLi = document.createElement('li');
+        var oTaskOn = _this.getByClass(_this.oTaskFolderUl, 'on')[0];
+        oLi.className = 'taskFolder';
+        if (_this.hasClass(oTaskOn.parentNode, 'task-dft')) { // 选择默认分类时，创建一个新分类
+            oLi.innerHTML = '<a href="#" class="list-item ico-task"><span>' + CategoryName + '</span><span> (0)</span><i class="ico-delete"></i></a><ul></ul>';
+            _this.oTaskFolderUl.appendChild(oLi);
+        } else { // 非默认分类时，在内部创建新分类
+            oLi.innerHTML = '<a href="#" class="list-item ico-task-sec"><span>' + CategoryName + '</span><span> (0)</span><i class="ico-delete"></i></a>';
+            if (_this.hasClass(oTaskOn, 'ico-task-sec')) {
+                oTaskOn.parentNode.parentNode.appendChild(oLi);
+            } else {
+                _this.removeClass(oTaskOn.parentNode, 'taskFolder-fold');
+                if (oTaskOn.nextElementSibling) {
+                    oTaskOn.nextElementSibling.appendChild(oLi);
+                } else {
+                    oTaskOn.nextSibling.appendChild(oLi);
+                }
+            }
+        }
+    },
+    getByClass: function (oElement, sClassName) {
+        var elements = oElement.getElementsByTagName('*');
+        var aResult = [];
+        for (var i = 0; i < elements.length; i++) {
+            if (this.hasClass(elements[i], sClassName)) {
+                aResult.push(elements[i]);
+            }
+        }
+        return aResult;
+    },
+    trim: function (str) {
+        return str.replace(/^\s+|\s+$/g,'');
+    },
+    getClassNames: function (oElement) {
+        if (!oElement) {return false;}
+        return this.trim(oElement.className).replace(/\s+/g, ' ').split(' ');
+    },
+    addClass: function (oElement, sClassName) {
+        if (!oElement || !sClassName) {return false;}
+        var aClassName = this.getClassNames(oElement);
+        if (this.inArray(sClassName, aClassName) != -1) {return false;}
+        oElement.className += (oElement.className ? ' ' : '')+ sClassName;
+    },
+    removeClass: function (oElement, sClassName) {
+        if (!oElement || !sClassName) {return false;}
+        var aClassName = this.getClassNames(oElement);
+        var length = aClassName.length;
+        for (var i = 0; i < length; i++) {
+            if (aClassName[i] === sClassName) {
+                aClassName.splice(i, 1);
+            }
+        }
+        oElement.className = aClassName.join(' ');
+        return (length === aClassName.length) ? false : true;
+    },
+    inArray: function (value, array) {
+        // if (!this.isArray(array)) {return false;}
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function(elt /*, from*/) {
+                var len = this.length >>> 0; // 利用位运算中的无符号右移操作符进行转型
+
+                var from = Number(arguments[1]) || 0;
+                from = (from < 0)
+                     ? Math.ceil(from)
+                     : Math.floor(from);
+                if (from < 0)
+                  from += len;
+
+                for (; from < len; from++) {
+                  if (from in this &&
+                      this[from] === elt)
+                    return from;
+                }
+                return -1;
+            };
+        }
+        return array.indexOf(value, arguments[2]);
+    },
+    hasClass: function (oElement, sClassName) {
+        var aClassName = this.getClassNames(oElement);
+        return this.inArray(sClassName, aClassName) != -1;
+    },
+    isArray: function (array) {
+        var str = Object.prototype.toString.call(array).slice(8,-1).toLowerCase();
+        if (str == "array") { return true; }
+        else { return false; }
+    }
+}
+window.onload = function () {
+    new Gtd();
+}
+</script>
+</body>
+</html>
