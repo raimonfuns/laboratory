@@ -268,10 +268,10 @@ var Zepto = (function() {
     var dom, nodes, container
 
     // A special case optimization for a single tag
-      //如果是单个元素，创建dom
-      //TODO
-      // RegExp 是javascript中的一个内置对象。为正则表达式。
-//      RegExp.$1是RegExp的一个属性,指的是与正则表达式匹配的第一个 子匹配(以括号为标志)字符串，以此类推，RegExp.$2，RegExp.$3，..RegExp.$99总共可以有99个匹配
+    //如果是单个元素，创建dom
+    //TODO
+    // RegExp 是javascript中的一个内置对象。为正则表达式。
+    //      RegExp.$1是RegExp的一个属性,指的是与正则表达式匹配的第一个 子匹配(以括号为标志)字符串，以此类推，RegExp.$2，RegExp.$3，..RegExp.$99总共可以有99个匹配
     if (singleTagRE.test(html)) dom = $(document.createElement(RegExp.$1))
 
     if (!dom) {
@@ -342,13 +342,13 @@ var Zepto = (function() {
       // Note: In both Chrome 21 and Firefox 15, DOM error 12
       // is thrown if the fragment doesn't begin with <
       //如果是<开头 >结尾  基本的HTML代码时
-      if (selector[0] == '<' && fragmentRE.test(selector))
+      if (selector[0] == '<' && fragmentRE.test(selector)) 
         //调用片段生成dom
         dom = zepto.fragment(selector, RegExp.$1, context), selector = null
       // If there's a context, create a collection on that context first, and select
       // nodes from there
       //如果传递了上下文，在上下文中查找元素
-      else if (context !== undefined) return $(context).find(selector)
+      else if (context !== undefined)  return $(context).find(selector)
       // If it's a CSS selector, use it to select nodes.
       //通过css表达式查找元素
       else dom = zepto.qsa(document, selector)
