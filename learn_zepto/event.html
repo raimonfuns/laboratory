@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>zepto core</title>
+</head>
+<body>
+	<div id="click">点击事件</div>
+<script type="text/javascript" src="zepto_core.js"></script>
+<script type="text/javascript" src="event.js"></script>
+<script type="text/javascript">
+function log(value) {
+	console.log(value);
+}
+
+log('*****************************************************************************************');
+log('****************************************  事件测试  *************************************');
+log('*****************************************************************************************');
+$('#click').click(function () {
+	alert('click event');
+});
+
+</script>
+</body>
+</html>

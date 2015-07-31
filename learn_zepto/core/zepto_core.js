@@ -336,7 +336,7 @@ var Zepto = (function() {
 
     //selector是字符串，即css表达式
     else if (typeof selector == 'string') {
-       //去前后空格
+      //去前后空格
       selector = selector.trim()
       // If it's a html fragment, create nodes from it
       // Note: In both Chrome 21 and Firefox 15, DOM error 12
@@ -429,9 +429,10 @@ var Zepto = (function() {
     var deep,    //是否执行深度合并
         args = slice.call(arguments, 1)//arguments[0]是target，被合并对象，或为deep
     if (typeof target == 'boolean') {
-        //第一个参数为boolean值时，表示是否深度合并
+      //第一个参数为boolean值时，表示是否深度合并
       deep = target
-      target = args.shift()   //target取第二个参数
+      //target取第二个参数
+      target = args.shift()   
     }
     //遍历后面的参数，都合并到target上
     args.forEach(function(arg){ extend(target, arg, deep) })
@@ -477,6 +478,7 @@ var Zepto = (function() {
      * @param nodes
      * @param selector
      * @returns {*|HTMLElement}
+     * Question
      */
   function filtered(nodes, selector) {
     return selector == null ? $(nodes) : $(nodes).filter(selector)
@@ -549,6 +551,7 @@ var Zepto = (function() {
      * 序列化值  把自定义数据读出来时做应该的转换，$.data()方法使用
      * @param value
      * @returns {*}
+     * Question parseJSON
      */
   function deserializeValue(value) {
     try {
